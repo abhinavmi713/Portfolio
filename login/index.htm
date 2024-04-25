@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loginApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Login & Registration</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+</head>
+<body>
+<div class="wrapper" ng-controller="FormController">
+    <nav class="nav">
+        <div class="nav-logo">
+            <p>ABHINAV. </p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul>
+                <li><a href="#" class="link active">Home</a></li>
+                <li><a href="about.html" class="link" target="_blank">About</a></li>
+            </ul>
+        </div>
+        <div class="nav-button">
+            <button class="btn white-btn" id="loginBtn" ng-click="toggleForm('login'); openIndex1()"> Sign In</button>
+            <button class="btn" id="registerBtn" ng-click="toggleForm('register')">Sign Up</button>
+        </div>
+        <div class="nav-menu-btn">
+            <i class="bx bx-menu" ng-click="toggleMenu()"></i>
+        </div>
+    </nav>
+
+    <div class="form-box">
+        <div class="login-container" id="login" ng-show="showLoginForm">
+            <div class="top">
+                <span>Don't have an account? <a href="#" ng-click="toggleForm('register')">Sign Up</a></span>
+                <header>Login</header>
+            </div>
+            <form name="loginForm" ng-submit="submitLoginForm()" novalidate>
+                <div class="input-box">
+                    <input type="email" class="input-field" placeholder="Email" ng-model="loginData.email" required>
+                    <i class="bx bx-user"></i>
+                    <span class="error" ng-show="loginForm.email.$dirty && loginForm.email.$error.required">Email is required.</span>
+                    <span class="error" ng-show="loginForm.email.$dirty && loginForm.email.$error.email">Invalid email format.</span>
+                </div>
+                <div class="input-box">
+                    <input type="password" class="input-field" placeholder="Password" ng-model="loginData.password" required>
+                    <i class="bx bx-lock-alt"></i>
+                    <span class="error" ng-show="loginForm.password.$dirty && loginForm.password.$error.required">Password is required.</span>
+                </div>
+                <div class="input-box">
+                    <button type="submit" class="submit" ng-disabled="loginForm.$invalid">Sign In</button>
+                </div>
+            </form>
+            <div class="two-col">
+                <div class="one">
+                    <input type="checkbox" id="login-check">
+                    <label for="login-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                    <label><a href="#">Forgot password?</a></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="register-container" id="register" ng-show="showRegisterForm">
+            <div class="top">
+                <span>Have an account? <a href="#" ng-click="toggleForm('login')">Login</a></span>
+                <header>Sign Up</header>
+            </div>
+            <form name="registerForm" action="/index" method="post" ng-submit="submitRegisterForm()" novalidate>
+                <div class="two-forms">
+                    <div class="input-box">
+                        <input type="text" name="fname" class="input-field" placeholder="Firstname" ng-model="registerData.firstname" required>
+                        <i class="bx bx-user"></i>
+                        <span class="error" ng-show="registerForm.firstname.$dirty && registerForm.firstname.$error.required">Firstname is required.</span>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="lname" class="input-field" placeholder="Lastname" ng-model="registerData.lastname" required>
+                        <i class="bx bx-user"></i>
+                        <span class="error" ng-show="registerForm.lastname.$dirty && registerForm.lastname.$error.required">Lastname is required.</span>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="yourMail" placeholder="Email" ng-model="registerData.email" required>
+                    <i class="bx bx-envelope"></i>
+                    <span class="error" ng-show="registerForm.email.$dirty && registerForm.email.$error.required">Email is required.</span>
+                    <span class="error" ng-show="registerForm.email.$dirty && registerForm.email.$error.email">Invalid email format.</span>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" class="input-field" placeholder="Password" ng-model="registerData.password" required>
+                    <i class="bx bx-lock-alt"></i>
+                    <span class="error" ng-show="registerForm.password.$dirty && registerForm.password.$error.required">Password is required.</span>
+                </div>
+                <div class="input-box">
+                    <button type="submit" class="submit" ng-disabled="registerForm.$invalid">Register</button>
+                </div>
+            </form>
+            <div class="two-col">
+                <div class="one">
+                    <input type="checkbox" id="register-check">
+                    <label for="register-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                    <label><a href="#">Terms & conditions</a></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('loginApp', []);
+
+    app.controller('FormController', function ($scope, $window) {
+        $scope.showLoginForm = true;
+        $scope.showRegisterForm = false;
+        $scope.loginData = {};
+        $scope.registerData = {};
+
+        $scope.toggleForm = function (form) {
+            if (form === 'login') {
+                $scope.showLoginForm = true;
+                $scope.showRegisterForm = false;
+            } else if (form === 'register') {
+                $scope.showLoginForm = false;
+                $scope.showRegisterForm = true;
+            }
+        };
+
+        $scope.submitLoginForm = function () {
+            alert('Login form submitted with data:', $scope.loginData);
+        };
+
+        $scope.submitRegisterForm = function () {
+            alert('Register form submitted with data:', $scope.registerData);
+        };
+
+        $scope.toggleMenu = function () {
+            var i = document.getElementById("navMenu");
+            if (i.className === "nav-menu") {
+                i.className += " responsive";
+            } else {
+                i.className = "nav-menu";
+            }
+        };
+        $scope.openIndex1 = function () {
+            if ($scope.loginForm.$valid) {
+            console.log('Login form submitted with data:', $scope.loginData);
+            
+            window.open("index1.html", "_blank");
+
+            } else {
+            console.log('Form is invalid. Please fill in all required fields.');
+        }
+        };
+    });
+</script>
+
+</body>
+</html>
